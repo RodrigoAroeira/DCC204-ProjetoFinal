@@ -1,0 +1,7 @@
+build/
+cmake-*
+.idea/
+.vscode/
+
+.clangd
+
