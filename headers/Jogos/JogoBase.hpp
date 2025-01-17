@@ -1,19 +1,20 @@
 #pragma once
 
-#include "Jogador.hpp"
-
 #include <map>
-#include <memory>
 #include <vector>
+
+#include "Jogador.hpp"
+#include "Leaderboard.hpp"
 
 class JogoBase {
 public:
-  JogoBase() : mJogadoresPontuacao{}, mJogadorAtual{nullptr} {};
+  JogoBase(Leaderboard &leaderboard);
   virtual ~JogoBase() = default;
 
-  bool cadastrarJogador(const Jogador &jogador);
-  void mudarJogadorAtual();
+  virtual bool cadastrarJogador(const Jogador &jogador);
+  virtual void mudarJogadorAtual();
 
+  virtual void jogar() = 0;
   virtual void lerJogada() = 0;
   virtual bool jogadaValida(int x, int y) const = 0;
   virtual bool verificarVitoria() const = 0;
@@ -22,5 +23,6 @@ public:
 protected:
   std::map<Jogador, float> mJogadoresPontuacao;
   std::vector<std::vector<char>> mTabuleiro;
-  std::unique_ptr<Jogador> mJogadorAtual;
+  Jogador *mJogadorAtual; // Ponteiros de stack
+  Leaderboard &mLeaderboard;
 };
