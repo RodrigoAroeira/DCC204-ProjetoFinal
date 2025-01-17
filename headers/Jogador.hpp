@@ -34,6 +34,7 @@ public:
   void aumentarOthello(int quant);
 
   bool operator==(const Jogador &j) const;
+  bool operator!=(const Jogador &j) const;
 
 private:
   std::string mNome;

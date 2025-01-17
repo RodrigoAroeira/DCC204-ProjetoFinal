@@ -57,3 +57,5 @@ void Jogador::aumentarLig4(int quant) { mJogoDaVelha += quant; }
 void Jogador::aumentarOthello(int quant) { mJogoDaVelha += quant; }
 
 bool Jogador::operator==(const Jogador &j) const { return mNome == j.mNome; }
+
+bool Jogador::operator!=(const Jogador &j) const { return !(*this == j); }
