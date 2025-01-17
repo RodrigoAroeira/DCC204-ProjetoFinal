@@ -33,7 +33,9 @@ void Leaderboard::updateJogador(const Jogador &jogador) {
 
   for (auto &j : mJogadores) {
     if (j.mNome == jogador.mNome) {
-      j = jogador;
+      j.aumentarJV(jogador.getJV());
+      j.aumentarLig4(jogador.getLig4());
+      j.aumentarOthello(jogador.getLig4());
       return;
     }
   }
