@@ -147,25 +147,39 @@ bool JogoDaVelha::verificarVitoria() const {
   return false;
 }
 
-  if (mJogadorAtual == nullptr) {
-    mudarJogadorAtual();
+void JogoDaVelha::jogar() {
+  if (mJogadorTipo.size() != 2) {
+    throw std::runtime_error("Jogo da velha requer 2 jogadores.");
   }
-  while (!verificarVitoria()) {
+  mudarJogadorAtual();
+  std::cout << mJogadorAtual->getNome() << " começa!\n";
+  while (true) {
     limparTela();
     imprimirTabuleiro();
     lerJogada();
-    mudarJogadorAtual();
-    if (isTabuleiroCheio(mTabuleiro)) {
-      std::string input;
-      std::cout << "Nenhum ganhador. Deseja recomeçar (y, [n])?\n> ";
-      std::cin.clear();
-      static const size_t ignoreN = std::numeric_limits<std::streamsize>::max();
-      std::cin.ignore(ignoreN, '\n');
-      std::cin >> input;
-      if (input == "y" || input == "Y")
-        mTabuleiro = tabuleiroInicial;
-      else
-        return;
+
+    if (verificarVitoria()) {
+      limparTela();
+      imprimirTabuleiro();
+      std::cout << mJogadorAtual->getNome() << " venceu!\n";
+      mJogadoresPontuacao[mJogadorAtual] += 1;
+      break;
     }
+
+    if (isTabuleiroCheio(mTabuleiro)) {
+      limparTela();
+      imprimirTabuleiro();
+      std::cout << "Empate! Deseja jogar novamente (y/n)? ";
+      char resposta;
+      std::cin >> resposta;
+      if (tolower(resposta) == 'y') {
+        mTabuleiro = tabuleiroInicial;
+        continue;
+      } else {
+        break;
+      }
+    }
+
+    mudarJogadorAtual();
   }
 }

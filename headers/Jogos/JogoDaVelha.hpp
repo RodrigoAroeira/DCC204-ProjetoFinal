@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 
 #include "JogoBase.hpp"
 
@@ -11,10 +12,11 @@ public:
 
   bool cadastrarJogador(std::shared_ptr<Jogador> jogador) override;
 
-  void jogar() override;
   bool jogadaValida(int x, int y) const override;
   void lerJogada() override;
   void imprimirTabuleiro() const override;
+  bool verificarVitoria() const override;
+  void jogar() override;
 
 private:
   void mudarJogadorAtual() override;
