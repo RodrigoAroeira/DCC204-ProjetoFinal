@@ -2,7 +2,9 @@
 
 #include <algorithm>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <stdexcept>
 
@@ -10,15 +12,13 @@
 
 const char *CSV_HEADER = "Nome,JogoDaVelha,Lig4,Othello";
 
-// std::quoted existe apenas a partir de c++14
-std::string quoted(const std::string &str, char c = '"') { return c + str + c; }
-
 Leaderboard::Leaderboard(const std::string &arquivo) : mArquivo(arquivo) {
   read();
 }
+
 Leaderboard::~Leaderboard() { save(); }
 
-void Leaderboard::addJogador(const Jogador &jogador) {
+void Leaderboard::addJogador(std::shared_ptr<Jogador> jogador) {
 
   if (jogadorExiste(jogador))
     throw std::runtime_error("Jogador presente já presente no leaderboard.");
@@ -26,52 +26,58 @@ void Leaderboard::addJogador(const Jogador &jogador) {
   mJogadores.push_back(jogador);
 }
 
-void Leaderboard::updateJogador(const Jogador &jogador) {
+void Leaderboard::updateJogador(std::shared_ptr<Jogador> jogador) {
   if (!jogadorExiste(jogador)) {
     throw std::runtime_error("Jogador não está presente no leaderboard");
   }
 
   for (auto &j : mJogadores) {
-    if (j.mNome == jogador.mNome) {
-      j.aumentarJV(jogador.getJV());
-      j.aumentarLig4(jogador.getLig4());
-      j.aumentarOthello(jogador.getLig4());
+    if (j->mNome == jogador->mNome) {
+      j->aumentarJV(jogador->getJV());
+      j->aumentarLig4(jogador->getLig4());
+      j->aumentarOthello(jogador->getLig4());
       return;
     }
   }
 }
 
-const Jogador Leaderboard::getJogador(const std::string &nome) const {
+const std::shared_ptr<Jogador>
+Leaderboard::getJogador(const std::string &nome) const {
   for (auto &jogador : mJogadores) {
-    if (jogador.mNome == nome) {
+    if (jogador->mNome == nome) {
       return jogador;
     }
   }
   std::cout << "Jogador não encontrado. Retornando novo jogador." << std::endl;
-  return Jogador(nome);
+  return std::make_shared<Jogador>(nome);
 }
 
 void Leaderboard::save() {
   std::ofstream arquivo(mArquivo);
   if (!arquivo.is_open()) {
-    std::string err = "Impossível abrir arquivo " + quoted(mArquivo);
-    throw std::runtime_error(err);
+    std::stringstream ss;
+    ss << "Impossível abrir arquivo " << std::quoted(mArquivo);
+    throw std::runtime_error(ss.str());
   }
 
   arquivo << CSV_HEADER << "\n";
   std::sort(mJogadores.begin(), mJogadores.end(),
-            [](const Jogador &a, const Jogador &b) {
-              return a.mPontosTot >= b.mPontosTot;
+            [](std::shared_ptr<Jogador> a, std::shared_ptr<Jogador> b) {
+              return a->mPontosTot >= b->mPontosTot;
             });
 
   for (const auto &jogador : mJogadores) {
-    arquivo << jogador.linhaCSV() << '\n';
+    arquivo << jogador->linhaCSV() << '\n';
   }
 }
 
-bool Leaderboard::jogadorExiste(const Jogador &jogador) const {
-  return std::find(mJogadores.begin(), mJogadores.end(), jogador) !=
-         mJogadores.end();
+bool Leaderboard::jogadorExiste(std::shared_ptr<Jogador> jogador) const {
+  for (const auto &other : mJogadores) {
+    if (other->mNome == jogador->mNome) {
+      return true;
+    }
+  }
+  return false;
 }
 
 void Leaderboard::read() {
@@ -80,12 +86,8 @@ void Leaderboard::read() {
   //
   std::ifstream f(mArquivo);
   if (!f.is_open()) {
-    std::cerr << "Arquivo " << quoted(mArquivo, '`')
-              << " não encontrado. Criando um novo." << std::endl;
-
-    if (!std::ofstream(mArquivo).is_open())
-      throw std::runtime_error(
-          "Impossível ler ou criar arquivo de leaderboard.");
+    std::cerr << "Arquivo " << std::quoted(mArquivo, '`') << " não encontrado."
+              << std::endl;
 
     return;
   }
@@ -109,11 +111,11 @@ void Leaderboard::read() {
       throw std::runtime_error("Linha do arquivo CSV inválida");
     }
 
-    Jogador j(tokens[0]);
-    j.mJogoDaVelha = std::stoi(tokens[1]);
-    j.mLig4 = std::stoi(tokens[2]);
-    j.mOthello = std::stoi(tokens[3]);
-    j.mPontosTot = j.mJogoDaVelha + j.mLig4 + j.mOthello;
+    auto j = std::make_shared<Jogador>(tokens[0]);
+    j->mJogoDaVelha = std::stoi(tokens[1]);
+    j->mLig4 = std::stoi(tokens[2]);
+    j->mOthello = std::stoi(tokens[3]);
+    j->mPontosTot = j->mJogoDaVelha + j->mLig4 + j->mOthello;
     mJogadores.push_back(j);
   }
 }

@@ -1,6 +1,7 @@
 #include "Jogador.hpp"
 
 #include <iostream>
+#include <memory>
 #include <sstream>
 
 #include "Leaderboard.hpp"
@@ -8,14 +9,14 @@
 Jogador::Jogador(const std::string &nome)
     : mNome(nome), mJogoDaVelha(0), mLig4(0), mOthello(0), mPontosTot(0) {}
 
-Jogador Jogador::fromLeaderboard(const Leaderboard &lb) {
+std::shared_ptr<Jogador> Jogador::fromLeaderboard(const Leaderboard &lb) {
   std::string nome;
   std::cout << "Digite o seu nome: ";
   std::cin >> nome;
   return lb.getJogador(nome);
 }
 
-Jogador Jogador::fromInput() {
+std::shared_ptr<Jogador> Jogador::fromInput() {
   std::string nome;
   std::string opt;
   do {
@@ -27,7 +28,7 @@ Jogador Jogador::fromInput() {
     std::cin >> opt;
   } while (opt != "y" || opt != "Y");
 
-  return Jogador(nome);
+  return std::make_shared<Jogador>(nome);
 }
 
 std::string Jogador::linhaCSV() const {

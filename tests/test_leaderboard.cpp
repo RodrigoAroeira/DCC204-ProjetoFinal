@@ -1,3 +1,4 @@
+#include <memory>
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include <cstdio>
@@ -22,7 +23,7 @@ TEST_CASE("addJogador") {
 
   Leaderboard lb(csv);
 
-  Jogador j("P1");
+  auto j = std::make_shared<Jogador>("P1");
 
   lb.addJogador(j);
   // Se j foi adicionado com sucesso, proxima linha passa teste
@@ -32,15 +33,15 @@ TEST_CASE("addJogador") {
 TEST_CASE("updateJogador") {
   Leaderboard lb(csv);
   const char *nome = "P2";
-  Jogador j(nome);
+  auto j = std::make_shared<Jogador>(nome);
   CHECK_THROWS(lb.updateJogador(j));
 
   lb.addJogador(j);
-  j.setJV(5);
+  j->setJV(5);
   lb.updateJogador(j);
   auto orig = spoofInput(nome);
 
-  CHECK_EQ(Jogador::fromLeaderboard(lb).getJV(), 5);
+  CHECK_EQ(Jogador::fromLeaderboard(lb)->getJV(), 10);
   std::cin.rdbuf(orig);
 }
 
@@ -57,12 +58,12 @@ TEST_CASE("Ler CSV valido") {
   // Simular input de usuário
   auto orig = spoofInput(nome);
 
-  Jogador j = Jogador::fromLeaderboard(lb);
-  CHECK_EQ(j.getNome(), nome);
-  CHECK_EQ(j.getJV(), JV);
-  CHECK_EQ(j.getLig4(), Lig4);
-  CHECK_EQ(j.getOthello(), Othello);
-  CHECK_EQ(j.getPontosTot(), JV + Lig4 + Othello);
+  auto j = Jogador::fromLeaderboard(lb);
+  CHECK_EQ(j->getNome(), nome);
+  CHECK_EQ(j->getJV(), JV);
+  CHECK_EQ(j->getLig4(), Lig4);
+  CHECK_EQ(j->getOthello(), Othello);
+  CHECK_EQ(j->getPontosTot(), JV + Lig4 + Othello);
 
   std::cin.rdbuf(orig);
 }

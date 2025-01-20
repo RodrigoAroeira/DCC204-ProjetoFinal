@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
 class Leaderboard;
@@ -10,8 +11,8 @@ class Jogador {
 public:
   Jogador(const std::string &nome);
 
-  static Jogador fromInput();
-  static Jogador fromLeaderboard(const Leaderboard &lb);
+  static std::shared_ptr<Jogador> fromInput();
+  static std::shared_ptr<Jogador> fromLeaderboard(const Leaderboard &lb);
 
   std::string linhaCSV() const;
 

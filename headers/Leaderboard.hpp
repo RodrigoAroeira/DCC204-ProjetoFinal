@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -9,17 +10,17 @@ class Leaderboard {
 public:
   Leaderboard(const std::string &arquivo);
   ~Leaderboard();
-  void addJogador(const Jogador &jogador);
-  void updateJogador(const Jogador &jogador);
+  void addJogador(const std::shared_ptr<Jogador> jogador);
+  void updateJogador(const std::shared_ptr<Jogador> jogador);
 
-  const Jogador getJogador(const std::string &nome) const;
+  const std::shared_ptr<Jogador> getJogador(const std::string &nome) const;
 
 private:
-  bool jogadorExiste(const Jogador &jogador) const;
+  bool jogadorExiste(const std::shared_ptr<Jogador> jogador) const;
   void read();
   void save();
 
 private:
   std::string mArquivo;
-  std::vector<Jogador> mJogadores;
+  std::vector<std::shared_ptr<Jogador>> mJogadores;
 };
