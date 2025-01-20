@@ -9,7 +9,7 @@ public:
   JogoDaVelha(Leaderboard &leaderboard);
   ~JogoDaVelha() override;
 
-  bool cadastrarJogador(const Jogador &jogador) override;
+  bool cadastrarJogador(std::shared_ptr<Jogador> jogador) override;
 
   void jogar() override;
   bool jogadaValida(int x, int y) const override;
@@ -20,5 +20,5 @@ private:
   void mudarJogadorAtual() override;
 
 private:
-  std::map<Jogador, char> mJogadorTipo;
+  std::map<std::shared_ptr<Jogador>, char> mJogadorTipo;
 };

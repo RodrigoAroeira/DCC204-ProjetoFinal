@@ -11,8 +11,8 @@ public:
   JogoBase(Leaderboard &leaderboard);
   virtual ~JogoBase() = default;
 
-  virtual bool cadastrarJogador(const Jogador &jogador);
-  virtual void mudarJogadorAtual();
+  virtual bool cadastrarJogador(std::shared_ptr<Jogador> jogador);
+  virtual void mudarJogadorAtual() = 0;
 
   virtual void jogar() = 0;
   virtual void lerJogada() = 0;
@@ -21,8 +21,8 @@ public:
   virtual void imprimirTabuleiro() const = 0;
 
 protected:
-  std::map<Jogador, float> mJogadoresPontuacao;
+  std::map<std::shared_ptr<Jogador>, float> mJogadoresPontuacao;
   std::vector<std::vector<char>> mTabuleiro;
-  Jogador *mJogadorAtual; // Ponteiros de stack
+  std::shared_ptr<Jogador> mJogadorAtual;
   Leaderboard &mLeaderboard;
 };

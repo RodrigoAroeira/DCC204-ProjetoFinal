@@ -38,7 +38,7 @@ JogoDaVelha::~JogoDaVelha() {
   }
 }
 
-bool JogoDaVelha::cadastrarJogador(const Jogador &jogador) {
+bool JogoDaVelha::cadastrarJogador(const std::shared_ptr<Jogador> jogador) {
   bool resultado = JogoBase::cadastrarJogador(jogador);
   if (!resultado)
     return false;
