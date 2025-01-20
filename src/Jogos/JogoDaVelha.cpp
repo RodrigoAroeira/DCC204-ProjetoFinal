@@ -56,11 +56,10 @@ bool JogoDaVelha::cadastrarJogador(const Jogador &jogador) {
 }
 
 void JogoDaVelha::mudarJogadorAtual() {
-  for (const auto &pair : mJogadorTipo) {
-    auto jogador = pair.first;
-
-    if (jogador != *mJogadorAtual) {
-      mJogadorAtual = &jogador;
+  for (const auto &[jogador, _] : mJogadorTipo) {
+    if (jogador != mJogadorAtual) {
+      mJogadorAtual = jogador;
+      return;
     }
   }
 }
