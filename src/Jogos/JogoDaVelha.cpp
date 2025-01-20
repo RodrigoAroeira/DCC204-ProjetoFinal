@@ -1,9 +1,6 @@
 #include "JogoDaVelha.hpp"
 
-#include <ios>
 #include <iostream>
-#include <limits>
-#include <sstream>
 #include <stdexcept>
 
 #include "JogoBase.hpp"
@@ -46,7 +43,6 @@ bool JogoDaVelha::cadastrarJogador(const std::shared_ptr<Jogador> jogador) {
   char tipo;
   if (mJogadorTipo.empty()) {
     tipo = 'x';
-    mJogadorTipo[jogador] = tipo;
   } else {
     tipo = 'o';
   }
@@ -93,7 +89,7 @@ void JogoDaVelha::lerJogada() {
     std::cout << "Jogada inválida!\n";
   }
 
-  char pChar = mJogadorTipo[*mJogadorAtual];
+  char pChar = mJogadorTipo[mJogadorAtual];
 
   mTabuleiro[x][y] = pChar;
 }
