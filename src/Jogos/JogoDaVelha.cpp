@@ -126,12 +126,26 @@ bool isTabuleiroCheio(const std::vector<std::vector<char>> &tabuleiro) {
   return true;
 }
 
-void JogoDaVelha::jogar() {
-  if (mJogadorTipo.size() != 2) {
-    std::stringstream ss("Jogadores insuficientes: ");
-    ss << mJogadorTipo.size();
-    throw std::runtime_error(ss.str());
+bool JogoDaVelha::verificarVitoria() const {
+  char jogadorChar = mJogadorTipo.at(mJogadorAtual);
+  // Verifica linhas e colunas
+  for (int i = 0; i < 3; ++i) {
+    if ((mTabuleiro[i][0] == jogadorChar && mTabuleiro[i][1] == jogadorChar &&
+         mTabuleiro[i][2] == jogadorChar) ||
+        (mTabuleiro[0][i] == jogadorChar && mTabuleiro[1][i] == jogadorChar &&
+         mTabuleiro[2][i] == jogadorChar)) {
+      return true;
+    }
   }
+  // Verifica diagonais
+  if ((mTabuleiro[0][0] == jogadorChar && mTabuleiro[1][1] == jogadorChar &&
+       mTabuleiro[2][2] == jogadorChar) ||
+      (mTabuleiro[0][2] == jogadorChar && mTabuleiro[1][1] == jogadorChar &&
+       mTabuleiro[2][0] == jogadorChar)) {
+    return true;
+  }
+  return false;
+}
 
   if (mJogadorAtual == nullptr) {
     mudarJogadorAtual();
