@@ -27,8 +27,9 @@ JogoDaVelha::JogoDaVelha(Leaderboard &leaderboard) : JogoBase(leaderboard) {
 }
 
 JogoDaVelha::~JogoDaVelha() {
-  for (const auto &pair : mJogadoresPontuacao) {
-    const Jogador &jogador = pair.first;
+  for (const auto &[jogador, _] : mJogadoresPontuacao) {
+    int pontos = mJogadoresPontuacao.at(jogador);
+    jogador->aumentarJV(pontos);
     try {
       mLeaderboard.addJogador(jogador);
     } catch (const std::exception &) {
