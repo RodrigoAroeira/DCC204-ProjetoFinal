@@ -100,13 +100,15 @@ void JogoDaVelha::lerJogada() {
 
 void JogoDaVelha::imprimirTabuleiro() const {
 
-  const std::vector<char> sep = {'-', '|', '-', '|', '-'};
+  const std::vector<char> sep = {'-', '|', '-', '|', '-', '|', '-'};
   std::vector<std::vector<char>> tabuleiro = {
-      {mTabuleiro[0][0], '|', mTabuleiro[0][1], '|', mTabuleiro[0][2]}, sep,
-      {mTabuleiro[1][0], '|', mTabuleiro[1][1], '|', mTabuleiro[1][2]}, sep,
-      {mTabuleiro[2][0], '|', mTabuleiro[2][1], '|', mTabuleiro[2][2]},
+      {'0', '|', mTabuleiro[0][0], '|', mTabuleiro[0][1], '|', mTabuleiro[0][2]},
+      sep,
+      {'1', '|', mTabuleiro[1][0], '|', mTabuleiro[1][1], '|', mTabuleiro[1][2]},
+      sep,
+      {'2', '|', mTabuleiro[2][0], '|', mTabuleiro[2][1], '|', mTabuleiro[2][2]},
   };
-
+  std::cout << "_|0 1 2\n";
   for (const auto &row : tabuleiro) {
     for (const auto &cell : row) {
       std::cout << cell;
