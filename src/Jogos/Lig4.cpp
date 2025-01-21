@@ -125,3 +125,152 @@ public:
             }
         }
     }
+  /// Verifica se alguém venceu (4 em linha horizontal, vertical ou diagonal)
+    bool verificarVitoria() const {
+        // Checa horizontais
+        for(int row = 0; row < ROWS; ++row) {
+            for(int col = 0; col < COLS - 3; ++col) {
+                char c = mTabuleiro[row][col];
+                if(c != ' ' &&
+                   c == mTabuleiro[row][col+1] &&
+                   c == mTabuleiro[row][col+2] &&
+                   c == mTabuleiro[row][col+3]) {
+                    return true;
+                }
+            }
+        }
+
+        // Checa verticais
+        for(int col = 0; col < COLS; ++col) {
+            for(int row = 0; row < ROWS - 3; ++row) {
+                char c = mTabuleiro[row][col];
+                if(c != ' ' &&
+                   c == mTabuleiro[row+1][col] &&
+                   c == mTabuleiro[row+2][col] &&
+                   c == mTabuleiro[row+3][col]) {
+                    return true;
+                }
+            }
+        }
+
+        // Checa diagonais “↘”
+        for(int row = 0; row < ROWS - 3; ++row) {
+            for(int col = 0; col < COLS - 3; ++col) {
+                char c = mTabuleiro[row][col];
+                if(c != ' ' &&
+                   c == mTabuleiro[row+1][col+1] &&
+                   c == mTabuleiro[row+2][col+2] &&
+                   c == mTabuleiro[row+3][col+3]) {
+                    return true;
+                }
+            }
+        }
+
+        // Checa diagonais “↙”
+        for(int row = 0; row < ROWS - 3; ++row) {
+            for(int col = 3; col < COLS; ++col) {
+                char c = mTabuleiro[row][col];
+                if(c != ' ' &&
+                   c == mTabuleiro[row+1][col-1] &&
+                   c == mTabuleiro[row+2][col-2] &&
+                   c == mTabuleiro[row+3][col-3]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /// Imprime o tabuleiro no console
+    void imprimirTabuleiro() const {
+        std::cout << *this << "\n";
+    }
+
+    /// Sobrecarga do operador << para exibir o tabuleiro formatado
+    friend std::ostream &operator<<(std::ostream &os, const JogoLig4 &j) {
+        for(int row = 0; row < ROWS; ++row) {
+            for(int col = 0; col < COLS; ++col) {
+                os << "|" << j.mTabuleiro[row][col];
+            }
+            os << "|\n";
+        }
+        // Imprime índices das colunas
+        for(int col = 0; col < COLS; ++col) {
+            os << " " << col;
+        }
+        os << "\n";
+        return os;
+    }
+
+    /// Inicia o loop principal do jogo
+    void jogar() {
+        // Verifica se há ao menos 2 jogadores
+        if (mJogadoresPontuacao.size() < 2) {
+            throw std::runtime_error("Jogadores insuficientes para começar o jogo!");
+        }
+
+        while(true) {
+            imprimirTabuleiro();
+            lerJogada();
+            
+            // Verifica se a jogada atual gerou uma vitória
+            if(verificarVitoria()) {
+                imprimirTabuleiro();
+                std::cout << "Jogador " << mJogadorAtual->getNome()
+                          << " venceu!\n";
+                return;
+            }
+            // Verifica se o tabuleiro encheu (empate)
+            if(isTabuleiroCheio()) {
+                imprimirTabuleiro();
+                std::cout << "Empate! O tabuleiro está cheio.\n";
+                return;
+            }
+            // Passa a vez para o próximo jogador
+            mudarJogadorAtual();
+        }
+    }
+
+private:
+    /// Verifica se o tabuleiro está cheio 
+    bool isTabuleiroCheio() const {
+        for(int row = 0; row < ROWS; ++row) {
+            for(int col = 0; col < COLS; ++col) {
+                if(mTabuleiro[row][col] == ' ') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+private:
+    std::map<std::shared_ptr<Jogador>, float> mJogadoresPontuacao;
+    std::vector<std::vector<char>> mTabuleiro;
+    std::shared_ptr<Jogador> mJogadorAtual;
+};
+
+/// Função principal para rodar o jogo
+int main() {
+    try {
+        JogoLig4 jogo;
+
+        std::cout << "Cadastro do primeiro jogador:\n";
+        Jogador j1 = Jogador::fromInput();
+        j1.tipo = JogadorTipo::P1;
+        jogo.cadastrarJogador(j1);
+
+        std::cout << "Cadastro do segundo jogador:\n";
+        Jogador j2 = Jogador::fromInput();
+        j2.tipo = JogadorTipo::P2;
+        jogo.cadastrarJogador(j2);
+
+        // Inicia a partida
+        jogo.jogar();
+    } 
+    catch(const std::exception &ex) {
+        std::cerr << "Erro: " << ex.what() << "\n";
+    }
+    return 0;
+}
