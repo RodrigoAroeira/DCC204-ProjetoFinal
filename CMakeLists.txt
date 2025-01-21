@@ -4,11 +4,11 @@ set(PROJECT_NAME "trabalho")
 
 project("${PROJECT_NAME}" VERSION 1.0)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(SRC_DIR "src")
-file(GLOB SRC_FILES "${SRC_DIR}/*.cpp")
+file(GLOB SRC_FILES "${SRC_DIR}/*.cpp" "${SRC_DIR}/Jogos/*.cpp")
 list(REMOVE_ITEM SRC_FILES "${SRC_DIR}/main.cpp")
 
 include_directories(headers headers/Jogos)
