@@ -1,26 +1,29 @@
 #pragma once
 
-#include "Jogador.hpp"
-
 #include <map>
 #include <memory>
 #include <vector>
 
+#include "Jogador.hpp"
+#include "Leaderboard.hpp"
+
 class JogoBase {
 public:
-  JogoBase() : mJogadoresPontuacao{}, mJogadorAtual{nullptr} {};
+  JogoBase(Leaderboard &leaderboard);
   virtual ~JogoBase() = default;
 
-  bool cadastrarJogador(const Jogador &jogador);
-  void mudarJogadorAtual();
+  virtual bool cadastrarJogador(std::shared_ptr<Jogador> jogador);
+  virtual void mudarJogadorAtual() = 0;
 
+  virtual void jogar() = 0;
   virtual void lerJogada() = 0;
   virtual bool jogadaValida(int x, int y) const = 0;
   virtual bool verificarVitoria() const = 0;
   virtual void imprimirTabuleiro() const = 0;
 
 protected:
-  std::map<Jogador, float> mJogadoresPontuacao;
+  std::map<std::shared_ptr<Jogador>, float> mJogadoresPontuacao;
   std::vector<std::vector<char>> mTabuleiro;
-  std::unique_ptr<Jogador> mJogadorAtual;
+  std::shared_ptr<Jogador> mJogadorAtual;
+  Leaderboard &mLeaderboard;
 };
