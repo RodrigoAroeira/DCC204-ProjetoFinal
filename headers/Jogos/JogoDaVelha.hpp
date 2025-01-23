@@ -28,17 +28,16 @@ class JogoDaVelha : public JogoBase {
 public:
   /**
    * @brief Construtor da classe JogoDaVelha.
-   * @param leaderboard Referência para a tabela de liderança onde serão
-   * registrados os resultados.
-   *
-   * Inicializa o jogo e associa os jogadores à tabela de liderança fornecida.
+   * @param leaderboard Referência para a tabela de liderança onde os resultados
+   * serão registrados.
    */
   JogoDaVelha(Leaderboard &leaderboard);
 
   /**
    * @brief Destrutor da classe JogoDaVelha.
    *
-   * Libera os recursos alocados pela classe, caso necessário.
+   * Atualiza a pontuação de cada jogador no leaderboard antes de destruir o
+   * objeto.
    */
   ~JogoDaVelha() override;
 
@@ -53,11 +52,11 @@ public:
   bool cadastrarJogador(std::shared_ptr<Jogador>) override;
 
   /**
-   * @brief Inicia o jogo.
+   * @brief Ciclo principal do jogo da velha.
    *
    * Gerencia o ciclo principal do jogo, incluindo a alternância de turnos entre
    * os jogadores, verificação de condições de vitória ou empate, e exibição do
-   * tabuleiro.
+   * tabuleiro. Lança uma exceção caso não haja dois jogadores cadastrados.
    */
   void jogar() override;
 
