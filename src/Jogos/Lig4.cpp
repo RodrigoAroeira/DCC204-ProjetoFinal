@@ -72,7 +72,7 @@ void Lig4::lerJogada() {
 }
 
 void Lig4::imprimirTabuleiro() const {
-  std::cout << "_|0 1 2 3 4 5 6\n";
+  std::cout << " 0 1 2 3 4 5 6\n";
   for (int row = 0; row < ROWS; ++row) {
     for (int col = 0; col < COLS; ++col) {
       std::cout << "|" << mTabuleiro[row][col];
@@ -132,6 +132,15 @@ bool Lig4::verificarVitoria() const {
   }
 
   return false;
+}
+
+bool Lig4::isTabuleiroCheio() const {
+  for (int col = 0; col < COLS; ++col) {
+    if (mTabuleiro[0][col] == ' ') {
+      return false;
+    }
+  }
+  return true;
 }
 
 void Lig4::jogar() {
