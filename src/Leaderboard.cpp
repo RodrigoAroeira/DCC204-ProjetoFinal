@@ -48,7 +48,7 @@ Leaderboard::getJogador(const std::string &nome) const {
       return jogador;
     }
   }
-  std::cout << "Jogador não encontrado. Retornando novo jogador." << std::endl;
+  std::cout << "Jogador não encontrado. Criando novo jogador." << std::endl;
   return std::make_shared<Jogador>(nome);
 }
 

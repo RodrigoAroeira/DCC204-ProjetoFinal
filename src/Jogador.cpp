@@ -1,5 +1,6 @@
 #include "Jogador.hpp"
 
+#include <iomanip>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -11,23 +12,21 @@ Jogador::Jogador(const std::string &nome)
 
 std::shared_ptr<Jogador> Jogador::fromLeaderboard(const Leaderboard &lb) {
   std::string nome;
-  std::cout << "Digite o seu nome: ";
+  std::cout << "Digite o nome a ser encontrado na leaderboard: ";
   std::cin >> nome;
   return lb.getJogador(nome);
 }
 
 std::shared_ptr<Jogador> Jogador::fromInput() {
   std::string nome;
-  std::string opt;
+  char opt;
   do {
-    std::cout << "Digite o seu: ";
+    std::cout << "Digite o seu nome a ser registrado: ";
     std::cin >> nome;
-    std::cout << "O nome " << nome
-              << " está correto? (Digite y para confirmar)\n>";
+    std::cout << "O nome " << std::quoted(nome) << " está correto? (y/n)\n> ";
 
     std::cin >> opt;
-  } while (opt != "y" || opt != "Y");
-
+  } while (std::tolower(opt) != 'y');
   return std::make_shared<Jogador>(nome);
 }
 
