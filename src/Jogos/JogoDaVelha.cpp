@@ -1,6 +1,7 @@
 /**
  * @file JogoDaVelha.cpp
- * @brief Implementação da classe JogoDaVelha, representando um jogo da velha com funcionalidades completas.
+ * @brief Implementação da classe JogoDaVelha, representando um jogo da velha
+ * com funcionalidades completas.
  */
 
 #include "JogoDaVelha.hpp"
@@ -12,8 +13,9 @@
 
 /**
  * @brief Limpa a tela do terminal.
- * 
- * Utiliza diferentes comandos dependendo do sistema operacional (Windows ou Unix-like).
+ *
+ * Utiliza diferentes comandos dependendo do sistema operacional (Windows ou
+ * Unix-like).
  */
 void limparTela() {
 #ifdef _WIN32
@@ -34,7 +36,8 @@ std::vector<std::vector<char>> tabuleiroInicial{
 
 /**
  * @brief Construtor da classe JogoDaVelha.
- * @param leaderboard Referência para a tabela de liderança onde os resultados serão registrados.
+ * @param leaderboard Referência para a tabela de liderança onde os resultados
+ * serão registrados.
  */
 JogoDaVelha::JogoDaVelha(Leaderboard &leaderboard) : JogoBase(leaderboard) {
   mTabuleiro = tabuleiroInicial;
@@ -42,8 +45,9 @@ JogoDaVelha::JogoDaVelha(Leaderboard &leaderboard) : JogoBase(leaderboard) {
 
 /**
  * @brief Destrutor da classe JogoDaVelha.
- * 
- * Atualiza a pontuação de cada jogador no leaderboard antes de destruir o objeto.
+ *
+ * Atualiza a pontuação de cada jogador no leaderboard antes de destruir o
+ * objeto.
  */
 JogoDaVelha::~JogoDaVelha() {
   for (const auto &[jogador, _] : mJogadoresPontuacao) {
@@ -113,7 +117,7 @@ bool JogoDaVelha::jogadaValida(int x, int y) const {
 
 /**
  * @brief Lê a jogada do jogador atual e atualiza o tabuleiro.
- * 
+ *
  * Solicita ao jogador as coordenadas e garante que sejam válidas.
  */
 void JogoDaVelha::lerJogada() {
@@ -197,7 +201,7 @@ bool JogoDaVelha::verificarVitoria() const {
 
 /**
  * @brief Ciclo principal do jogo da velha.
- * 
+ *
  * Gerencia turnos, jogadas, condições de vitória e empate.
  * Lança uma exceção caso não haja dois jogadores cadastrados.
  */
