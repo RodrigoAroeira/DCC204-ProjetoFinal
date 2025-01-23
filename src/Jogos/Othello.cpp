@@ -41,7 +41,15 @@ Othello::Othello(Leaderboard &leaderboard) : JogoBase(leaderboard) {
 }
 
 Othello::~Othello() {
-  //
+  for (const auto &[jogador, _] : mJogadoresPontuacao) {
+    int pontos = mJogadoresPontuacao.at(jogador);
+    jogador->aumentarJV(pontos);
+    try {
+      mLeaderboard.addJogador(jogador);
+    } catch (const std::exception &) {
+      mLeaderboard.updateJogador(jogador);
+    }
+  }
 }
 
 bool Othello::cadastrarJogador(std::shared_ptr<Jogador> jogador) {
