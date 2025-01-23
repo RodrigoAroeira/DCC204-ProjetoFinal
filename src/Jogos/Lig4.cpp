@@ -4,7 +4,7 @@
 #include <limits>
 #include <stdexcept>
 
-extern void limparTela();
+#include "helpers.hpp"
 
 std::vector<std::vector<char>> tabuleiroInicialLig4(6,
                                                     std::vector<char>(7, ' '));

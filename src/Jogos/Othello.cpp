@@ -4,14 +4,7 @@
 #include <vector>
 
 #include "JogoBase.hpp"
-
-void limparTela() {
-#ifdef _WIN32
-  return (void)system("cls");
-#else
-  return (void)system("clear");
-#endif
-}
+#include "helpers.hpp"
 
 std::vector<std::vector<char>> Othello::tabuleiroInicial{
     {'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'},

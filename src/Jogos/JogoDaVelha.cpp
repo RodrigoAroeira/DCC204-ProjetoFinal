@@ -10,20 +10,7 @@
 #include <stdexcept>
 
 #include "JogoBase.hpp"
-
-/**
- * @brief Limpa a tela do terminal.
- *
- * Utiliza diferentes comandos dependendo do sistema operacional (Windows ou
- * Unix-like).
- */
-void limparTela() {
-#ifdef _WIN32
-  return (void)system("cls");
-#else
-  return (void)system("clear");
-#endif
-}
+#include "helpers.hpp"
 
 /**
  * @brief Tabuleiro inicial do jogo, representado por uma matriz 3x3 vazia.
