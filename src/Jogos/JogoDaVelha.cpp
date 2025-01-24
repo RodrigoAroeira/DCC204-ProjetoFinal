@@ -88,8 +88,9 @@ bool JogoDaVelha::jogadaValida(int x, int y) const {
 void JogoDaVelha::lerJogada() {
   int x, y;
 
+  char pChar = mJogadorTipo[mJogadorAtual];
   while (true) {
-    std::cout << "Digite as coordenadas de onde quer jogar: ";
+    std::cout << "Digite as coordenadas de onde quer jogar (" << pChar << "): ";
     std::cin >> x >> y;
 
     if (jogadaValida(x, y))
@@ -97,8 +98,6 @@ void JogoDaVelha::lerJogada() {
 
     std::cout << "Jogada inválida!\n";
   }
-
-  char pChar = mJogadorTipo[mJogadorAtual];
 
   mTabuleiro[x][y] = pChar;
 }
