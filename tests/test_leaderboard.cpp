@@ -3,21 +3,14 @@
 
 #include <cstdio>
 #include <fstream>
-#include <sstream>
-#include <streambuf>
 
 #include "Jogador.hpp"
 #include "Leaderboard.hpp"
 #include "doctest.h"
+#include "helpers.hpp"
 
 const char *csv = "teste.csv";
 extern const char *CSV_HEADER;
-
-[[nodiscard]] inline std::streambuf *spoofInput(const std::string &txt) {
-  static std::istringstream inputSpoof;
-  inputSpoof.str(txt);
-  return std::cin.rdbuf(inputSpoof.rdbuf());
-}
 
 TEST_CASE("addJogador") {
 
